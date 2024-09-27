@@ -21,7 +21,7 @@
         v-if="page?.date"
         :datetime="page.date"
       >
-        {{ formatDateEs(page.date) }}
+        {{ formatDate(page.date) }}
       </time>
     </header>
 

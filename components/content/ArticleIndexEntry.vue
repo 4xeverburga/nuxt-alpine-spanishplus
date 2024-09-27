@@ -46,7 +46,7 @@ const id = computed(() => {
         </h1>
       </NuxtLink>
       <time>
-        {{ formatDateEs(article.date) }}
+        {{ formatDate(article.date) }}
       </time>
     </div>
   </article>
