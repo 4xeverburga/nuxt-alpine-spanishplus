@@ -73,7 +73,7 @@ const id = computed(() => {
         {{ article.description }}
       </p>
       <time>
-        {{ formatDate(article.date) }}
+        {{ formatDateEs(article.date) }}
       </time>
     </div>
   </article>
