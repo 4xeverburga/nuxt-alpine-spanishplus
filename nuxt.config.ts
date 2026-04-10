@@ -1,5 +1,4 @@
 import { createResolver, logger, defineNuxtModule } from '@nuxt/kit'
-import { defineNuxtConfig } from 'nuxt/config'
 import { $fetch } from 'ofetch'
 import { version } from './package.json'
 
