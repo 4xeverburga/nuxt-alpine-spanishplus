@@ -20,7 +20,7 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
 
-      - uses: pnpm/action-setup@v2.2.4
+      - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
           version: 8
