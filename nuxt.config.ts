@@ -76,9 +76,7 @@ export default defineNuxtConfig({
       preload: ['json', 'js', 'ts', 'html', 'css', 'vue', 'diff', 'shell', 'markdown', 'yaml', 'bash', 'ini', 'c', 'cpp']
     }
   },
-  experimental: {
-    inlineSSRStyles: false
-  },
+  experimental: {},
   typescript: {
     includeWorkspace: true
   },
