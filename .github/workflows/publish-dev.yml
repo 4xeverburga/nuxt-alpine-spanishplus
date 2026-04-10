@@ -31,7 +31,10 @@ jobs:
         run: pnpm install
 
       - name: Bump version with dev suffix
-        run: npx jiti ./.github/scripts/bump-dev $PWD
+        run: |
+          COMMIT=$(git rev-parse --short HEAD)
+          VERSION=$(node -p "require('./package.json').version")
+          npm version "${VERSION}-dev.${COMMIT}" --no-git-tag-version
 
       - name: Publish to npm with dev tag
         run: npm publish --access public --tag dev
