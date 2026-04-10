@@ -56,9 +56,16 @@ Vincula el paquete con `pnpm link` y úsalo como dependencia enlazada en tu proy
 |---|---|---|---|
 | ci-main | `.github/workflows/ci.yml` | `main` | Valida build en push y PR |
 | ci-dev | `.github/workflows/ci-dev.yml` | `dev` | Valida build en push y PR |
-| publish | `.github/workflows/publish.yml` | `main` | Publica en npm como `latest` |
-| publish-dev | `.github/workflows/publish-dev.yml` | `dev` | Publica en npm con sufijo `-dev` y dist-tag `dev` |
+| publish | `.github/workflows/publish.yml` | `main` / `dev` | Publica en npm: `latest` desde main, `-dev` con dist-tag `dev` desde dev |
 | studio | `.github/workflows/studio.yml` | `main` | Genera sitio estático y despliega a GitHub Pages |
+
+Los workflows de publicación usan [trusted publishing (OIDC)](https://docs.npmjs.com/generating-provenance-statements#publishing-packages-with-provenance-via-trusted-publishing) en lugar de tokens. Para configurarlo:
+
+1. En [npmjs.com](https://www.npmjs.com) → paquete → **Settings** → **Trusted Publisher**
+2. Seleccionar **GitHub Actions** y completar:
+   - **Organization or user**: `4xeverburga`
+   - **Repository**: `alpine-theme`
+   - **Workflow filename**: `publish.yml`
 
 ## Licencia
 
