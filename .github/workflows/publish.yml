@@ -41,7 +41,7 @@ jobs:
       - name: Publish to npm
         run: |
           if [ "${{ github.event.workflow_run.head_branch }}" = "dev" ]; then
-            npm publish --access public --tag dev
+            npm publish --access public --provenance --tag dev
           else
-            npm publish --access public
+            npm publish --access public --provenance
           fi
