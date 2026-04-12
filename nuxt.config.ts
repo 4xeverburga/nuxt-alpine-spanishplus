@@ -29,13 +29,7 @@ const updateModule = defineNuxtModule({
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  app: {
-    head: {
-      htmlAttrs: {
-        lang: 'en'
-      }
-    }
-  },
+  app: {},
   extends: [envModules.typography, envModules.elements],
   runtimeConfig: {
     public: {
@@ -47,8 +41,23 @@ export default defineNuxtConfig({
     envModules.tokens,
     envModules.studio,
     '@nuxt/content',
+    '@nuxtjs/i18n',
     updateModule as any
   ],
+  i18n: {
+    locales: [
+      { code: 'es', language: 'es-PE', name: 'Español', file: 'es.json' },
+      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' }
+    ],
+    defaultLocale: 'es',
+    strategy: 'prefix',
+    langDir: 'i18n/locales',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_locale',
+      redirectOn: 'root'
+    }
+  },
   components: [
     { path: resolve('./components'), global: true },
     { path: resolve('./components/content'), global: true },

@@ -5,6 +5,7 @@ import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()
+const { locale } = useI18n()
 
 const props = defineProps({
   path: {
@@ -17,7 +18,7 @@ const currentYear = ref(parseInt(route.query.year as string) || new Date().getFu
 const years = ref([2025, 2024, 2023]) // Add more years as needed
 
 const fetchArticles = async (year: number) => {
-  const path = `${props.path}/${year}`
+  const path = `${locale.value}/${props.path}/${year}`
   const { data } = await useAsyncData(path, async () => await queryContent(withTrailingSlash(path)).sort({ date: -1 }).find())
   return data
 }
@@ -70,7 +71,7 @@ const yearButtons = computed(() => {
       </div>
     </div>
     <div v-else class="tour">
-      <p>Seems like there are no articles for {{ currentYear }}.</p>
+      <p>{{ $t('articles.empty', { year: currentYear }) }}</p>
     </div>
     <div class="spacing"> </div>
     <div class="navigation-buttons">

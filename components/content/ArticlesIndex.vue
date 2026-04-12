@@ -2,6 +2,8 @@
 import { withTrailingSlash } from 'ufo'
 import ArticleIndexEntry from './ArticleIndexEntry.vue';
 
+const { locale } = useI18n()
+
 const props = defineProps({
   path: {
     type: String,
@@ -9,8 +11,10 @@ const props = defineProps({
   }
 })
 
+const contentPath = computed(() => `${locale.value}/${props.path}`)
+
 // @ts-ignore
-const { data: _articles } = await useAsyncData(props.path, async () => await queryContent(withTrailingSlash(props.path)).sort({ date: -1 }).find())
+const { data: _articles } = await useAsyncData(contentPath.value, async () => await queryContent(withTrailingSlash(contentPath.value)).sort({ date: -1 }).find())
 
 // create new fields year and month
 // const articles = computed(() => _articles.value || [])
