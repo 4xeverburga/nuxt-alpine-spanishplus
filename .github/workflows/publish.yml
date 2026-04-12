@@ -14,6 +14,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      packages: write
 
     steps:
       - uses: actions/checkout@v4
@@ -43,6 +44,24 @@ jobs:
 
       - name: Publish to npm
         run: |
+          if [ "${{ github.event.workflow_run.head_branch }}" = "dev" ]; then
+            npm publish --access public --tag dev
+          else
+            npm publish --access public
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.14
+          registry-url: https://npm.pkg.github.com
+          scope: '@4xeverburga'
+
+      - name: Publish to GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Temporarily update package name to match GitHub owner scope
+          sed -i 's/"name": "@4verburga\/alpine-spanishplus"/"name": "@4xeverburga\/alpine-spanishplus"/' package.json
           if [ "${{ github.event.workflow_run.head_branch }}" = "dev" ]; then
             npm publish --access public --tag dev
           else
