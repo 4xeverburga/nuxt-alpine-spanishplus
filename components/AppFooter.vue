@@ -24,6 +24,9 @@ const alpine = useAppConfig().alpine
       <div v-if="alpine.socials && Object.entries(alpine.socials)" class="social">
         <SocialIcons :socials="alpine.socials" />
       </div>
+      <div class="language-switch">
+        <LanguageSwitcher />
+      </div>
       <div class="color-mode-switch">
         <ColorModeSwitch />
       </div>

@@ -1,0 +1,55 @@
+{
+  "colorMode": {
+    "label": "Modo de Color",
+    "dark": "Modo oscuro",
+    "light": "Modo claro",
+    "system": "Modo del sistema"
+  },
+  "nav": {
+    "menu": "Menú de Navegación"
+  },
+  "notFound": {
+    "message": "Esta página no pudo ser encontrada",
+    "code": "404",
+    "backHome": "Volver al inicio"
+  },
+  "article": {
+    "back": "Volver",
+    "byAuthor": "Por",
+    "backToTop": "Volver arriba"
+  },
+  "articles": {
+    "empty": "Parece que no hay artículos para {year}."
+  },
+  "hero": {
+    "title": "Título del héroe",
+    "description": "Descripción del héroe"
+  },
+  "form": {
+    "submitButton": "Enviar mensaje",
+    "sending": "Enviando...",
+    "fields": {
+      "name": {
+        "label": "Nombre",
+        "placeholder": "Tu nombre"
+      },
+      "email": {
+        "label": "Correo",
+        "placeholder": "Tu correo"
+      },
+      "subject": {
+        "label": "Asunto"
+      },
+      "message": {
+        "label": "Mensaje",
+        "placeholder": "Tu mensaje"
+      }
+    }
+  },
+  "footer": {
+    "message": "Sígueme en"
+  },
+  "app": {
+    "description": "El tema minimalista para blogs"
+  }
+}

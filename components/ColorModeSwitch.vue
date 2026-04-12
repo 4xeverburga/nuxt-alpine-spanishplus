@@ -10,19 +10,19 @@ const onClick = () => {
 </script>
 
 <template>
-  <button aria-label="Color Mode" @click="onClick">
+  <button :aria-label="$t('colorMode.label')" @click="onClick">
     <ColorScheme>
       <template v-if="colorMode.preference === 'dark'">
         <Icon name="uil:moon" />
-        <span class="sr-only">Dark mode</span>
+        <span class="sr-only">{{ $t('colorMode.dark') }}</span>
       </template>
       <template v-else-if="colorMode.preference === 'light'">
         <Icon name="uil:sun" />
-        <span class="sr-only">Light mode</span>
+        <span class="sr-only">{{ $t('colorMode.light') }}</span>
       </template>
       <template v-else>
         <Icon name="uil:desktop" />
-        <span class="sr-only">System mode</span>
+        <span class="sr-only">{{ $t('colorMode.system') }}</span>
       </template>
     </ColorScheme>
   </button>

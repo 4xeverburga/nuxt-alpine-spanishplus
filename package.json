@@ -1,6 +1,6 @@
 {
   "name": "@4verburga/alpine-spanishplus",
-  "version": "2.0.0",
+  "version": "3.0.1",
   "type": "module",
   "repository": {
     "type": "git",
@@ -12,6 +12,7 @@
     "assets",
     "components",
     "composables",
+    "i18n",
     "layouts",
     "types",
     "app.config.ts",
@@ -35,6 +36,7 @@
     "@nuxt-themes/typography": "^0.11.0",
     "@nuxt/content": "^2.13.0",
     "@nuxthq/studio": "^0.14.1",
+    "@nuxtjs/i18n": "^8.5.5",
     "@vueuse/core": "^10.7.2",
     "ufo": "^1.5.4"
   },

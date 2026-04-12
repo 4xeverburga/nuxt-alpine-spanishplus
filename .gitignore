@@ -24,3 +24,5 @@ tailwind.config.js.local
 .starters/**/yarn.lock
 .starters/**/package-lock.json
 .starters/**/pnpm-lock.yaml
+
+*.tgz

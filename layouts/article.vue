@@ -7,7 +7,7 @@
     >
       <Icon name="ph:arrow-left" />
       <span>
-        Back
+        {{ $t('article.back') }}
       </span>
     </NuxtLink>
     <header>
@@ -24,7 +24,7 @@
         {{ formatDate(page.date) }}
       </time>
         <span v-if="page?.author?.name" class="author">
-          &nbsp;•&nbsp;Por <strong>{{ page.author.name }}</strong>
+          &nbsp;•&nbsp;{{ $t('article.byAuthor') }} <strong>{{ page.author.name }}</strong>
         </span>
     </header>
 
@@ -35,7 +35,7 @@
         class="back-to-top"
       >
         <ProseA @click.prevent.stop="onBackToTop">
-          {{ alpine?.backToTop?.text || 'Back to top' }}
+          {{ alpine?.backToTop?.text || $t('article.backToTop') }}
           <Icon :name="alpine?.backToTop?.icon || 'material-symbols:arrow-upward'" />
         </ProseA>
       </div>

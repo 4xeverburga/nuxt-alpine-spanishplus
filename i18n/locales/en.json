@@ -1,0 +1,55 @@
+{
+  "colorMode": {
+    "label": "Color Mode",
+    "dark": "Dark mode",
+    "light": "Light mode",
+    "system": "System mode"
+  },
+  "nav": {
+    "menu": "Navigation Menu"
+  },
+  "notFound": {
+    "message": "This page could not be found",
+    "code": "404",
+    "backHome": "Back to homepage"
+  },
+  "article": {
+    "back": "Back",
+    "byAuthor": "By",
+    "backToTop": "Back to top"
+  },
+  "articles": {
+    "empty": "Seems like there are no articles for {year}."
+  },
+  "hero": {
+    "title": "Hero title",
+    "description": "Hero description"
+  },
+  "form": {
+    "submitButton": "Send message",
+    "sending": "Sending...",
+    "fields": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Your name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Your email"
+      },
+      "subject": {
+        "label": "Subject"
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Your message"
+      }
+    }
+  },
+  "footer": {
+    "message": "Follow me on"
+  },
+  "app": {
+    "description": "The minimalist blog theme"
+  }
+}
