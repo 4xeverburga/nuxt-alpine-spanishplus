@@ -2,6 +2,10 @@
   "name": "@4verburga/alpine-spanishplus",
   "version": "1.10.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4xeverburga/nuxt-alpine-spanishplus.git"
+  },
   "exports": "./nuxt.config.ts",
   "packageManager": "pnpm@8.5.1",
   "files": [
