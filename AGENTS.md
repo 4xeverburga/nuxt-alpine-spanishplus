@@ -2,11 +2,11 @@
 
 ## Overview
 
-This is `@4verburga/alpine-spanishplus` — a Nuxt theme layer forked from `@nuxt-themes/alpine`, customized for a bilingual personal blog. Published to both **npmjs.org** and **GitHub Packages** and consumed by blog projects (e.g., `meblog`) via `extends`.
+This is `@4xeverburga/alpine-spanishplus` — a Nuxt theme layer forked from `@nuxt-themes/alpine`, customized for a bilingual personal blog. Published to both **npmjs.org** and **GitHub Packages** under the same scope and consumed by blog projects (e.g., `meblog`) via `extends`.
 
 ## Architecture
 
-- **Nuxt theme layer**: Not a standalone app. Consumed via `extends: '@4verburga/alpine-spanishplus'` in consumer projects.
+- **Nuxt theme layer**: Not a standalone app. Consumed via `extends: '@4xeverburga/alpine-spanishplus'` in consumer projects.
 - **Starter** (`.starters/default/`): Internal test harness that extends this theme via `workspace:*` link. Used for local dev and CI builds.
 - **pnpm workspace**: Root package (the theme) + `.starters/default` (the test consumer).
 - **Document-driven**: Uses `@nuxt/content` with `documentDriven: true`. Pages are markdown files in `content/`.
@@ -41,8 +41,8 @@ pnpm dev                         # Dev server (may OOM locally — test in consu
 
 - **`ci.yml`** / **`ci-dev.yml`**: Build validation on `main` / `dev` branches
 - **`publish.yml`**: Triggered by `workflow_run` after CI success. Publishes to **two registries**:
-  1. **npmjs.org** as `@4verburga/alpine-spanishplus` — uses npm OIDC trusted publishing (no `NPM_TOKEN`)
-  2. **GitHub Packages** (`npm.pkg.github.com`) as `@4xeverburga/alpine-spanishplus` — uses `GITHUB_TOKEN` with `packages:write` permission. The scope is remapped from `@4verburga` → `@4xeverburga` at publish time via `sed` because GitHub Packages requires the scope to match the GitHub owner.
+  1. **npmjs.org** as `@4xeverburga/alpine-spanishplus` — uses npm OIDC trusted publishing (no `NPM_TOKEN`)
+  2. **GitHub Packages** (`npm.pkg.github.com`) as `@4xeverburga/alpine-spanishplus` — uses `GITHUB_TOKEN` with `packages:write` permission.
   - `dev` branch → publishes as `X.Y.Z-dev.<hash>` with `--tag dev`
   - `main` branch → publishes as `X.Y.Z` (latest)
   - The workflow YAML always runs from `main` (GitHub constraint), but checks out code from the triggering branch
