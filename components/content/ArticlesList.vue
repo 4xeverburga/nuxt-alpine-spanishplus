@@ -15,7 +15,8 @@ const props = defineProps({
 })
 
 const currentYear = ref(parseInt(route.query.year as string) || new Date().getFullYear())
-const years = ref([2025, 2024, 2023]) // Add more years as needed
+const startYear = 2023
+const years = ref(Array.from({ length: new Date().getFullYear() - startYear + 1 }, (_, i) => new Date().getFullYear() - i))
 
 const fetchArticles = async (year: number) => {
   const path = `${locale.value}/${props.path}/${year}`
