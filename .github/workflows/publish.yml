@@ -25,8 +25,11 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 22.14
           registry-url: https://registry.npmjs.org
+
+      - name: Upgrade npm (trusted publishing requires >= 11.5.1)
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: pnpm install --ignore-scripts
@@ -41,7 +44,7 @@ jobs:
       - name: Publish to npm
         run: |
           if [ "${{ github.event.workflow_run.head_branch }}" = "dev" ]; then
-            npm publish --access public --provenance --tag dev
+            npm publish --access public --tag dev
           else
-            npm publish --access public --provenance
+            npm publish --access public
           fi
