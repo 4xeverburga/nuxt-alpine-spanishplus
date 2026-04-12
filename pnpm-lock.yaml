@@ -68,7 +68,7 @@ importers:
 
   .starters/default:
     devDependencies:
-      '@4verburga/alpine-spanishplus':
+      '@4xeverburga/alpine-spanishplus':
         specifier: workspace:*
         version: link:../..
       '@nuxt/devtools':

@@ -11,14 +11,14 @@ Fork en español del tema [Alpine](https://github.com/nuxt-themes/alpine) de Nux
 ## Instalación
 
 ```bash
-npm install @4verburga/alpine-spanishplus
+npm install @4xeverburga/alpine-spanishplus
 ```
 
 Luego extiende tu proyecto en `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({
-  extends: '@4verburga/alpine-spanishplus'
+  extends: '@4xeverburga/alpine-spanishplus'
 })
 ```
 
