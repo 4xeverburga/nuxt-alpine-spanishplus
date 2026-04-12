@@ -1,18 +1,28 @@
 <script lang="ts" setup>
 const { navigation } = useContent()
+const { locale } = useI18n()
 
 const emits = defineEmits(['linkClick'])
 
 function handleClick() {
   emits('linkClick')
 }
+
+const localizedNavigation = computed(() => {
+  if (!navigation.value) return []
+  // Find the locale subtree in navigation (e.g. /es or /en)
+  const localeRoot = navigation.value.find(
+    (item: any) => item._path === `/${locale.value}`
+  )
+  return localeRoot?.children || navigation.value
+})
 </script>
 
 <template>
   <nav>
     <ul>
       <li
-        v-for="link of navigation"
+        v-for="link of localizedNavigation"
         :key="link._path"
       >
         <NuxtLink

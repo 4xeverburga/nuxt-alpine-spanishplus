@@ -1,15 +1,15 @@
 <template>
   <section>
     <p class="message">
-      This page could not be found
+      {{ $t('notFound.message') }}
     </p>
 
     <p class="status">
-      404
+      {{ $t('notFound.code') }}
     </p>
 
     <NuxtLink to="/">
-      Back to homepage
+      {{ $t('notFound.backHome') }}
       <Icon name="ph:arrow-right" />
     </NuxtLink>
   </section>

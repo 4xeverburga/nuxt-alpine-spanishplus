@@ -2,6 +2,7 @@
 import type { PropType } from 'vue'
 import type { Field } from '../../types/contact'
 const alpine = useAppConfig().alpine
+const { t } = useI18n()
 
 const { FORMSPREE_URL } = useRuntimeConfig().public
 
@@ -11,56 +12,59 @@ if (!FORMSPREE_URL) {
 
 const status = ref()
 
+const defaultFields = computed<Field[]>(() => [
+  {
+    type: 'text',
+    model: 'name',
+    name: t('form.fields.name.label'),
+    placeholder: t('form.fields.name.placeholder'),
+    required: true,
+    layout: 'default'
+  },
+  {
+    type: 'email',
+    model: 'email',
+    name: t('form.fields.email.label'),
+    placeholder: t('form.fields.email.placeholder'),
+    required: true,
+    layout: 'default'
+  },
+  {
+    type: 'text',
+    model: 'text',
+    name: t('form.fields.subject.label'),
+    required: false,
+    layout: 'default'
+  },
+  {
+    type: 'textarea',
+    model: 'message',
+    name: t('form.fields.message.label'),
+    placeholder: t('form.fields.message.placeholder'),
+    required: true,
+    layout: 'big'
+  }
+])
+
 const props = defineProps({
   submitButtonText: {
     type: String,
-    default: 'Send message'
+    default: ''
   },
   fields: {
     type: Array as PropType<Field[]>,
-    default: () => [
-      {
-        type: 'text',
-        model: 'name',
-        name: 'Name',
-        placeholder: 'Your name',
-        required: true,
-        layout: 'default'
-      },
-      {
-        type: 'email',
-        model: 'email',
-        name: 'Email',
-        placeholder: 'Your email',
-        required: true,
-        layout: 'default'
-      },
-      {
-        type: 'text',
-        model: 'text',
-        name: 'Subject',
-        required: false,
-        layout: 'default'
-      },
-      {
-        type: 'textarea',
-        model: 'message',
-        name: 'Message',
-        placeholder: 'Your message',
-        required: true,
-        layout: 'big'
-      }
-    ]
+    default: null
   }
 })
 
-const form = reactive(props.fields.map(v => ({ ...v, data: '' })))
+const activeFields = computed(() => props.fields || defaultFields.value)
+const form = reactive(activeFields.value.map(v => ({ ...v, data: '' })))
 
 const onSend = async (e: any) => {
   e.preventDefault()
   const data = new FormData(e.target)
 
-  status.value = 'Sending...'
+  status.value = t('form.sending')
 
   fetch(e.target.action, {
     method: e.target.method,
@@ -101,7 +105,7 @@ const onSend = async (e: any) => {
     </div>
     <div>
       <Button type="submit" :disabled="!FORMSPREE_URL">
-        {{ status ? status : submitButtonText }}
+        {{ status ? status : (submitButtonText || $t('form.submitButton')) }}
       </Button>
     </div>
   </form>
