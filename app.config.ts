@@ -35,7 +35,10 @@ export default defineAppConfig({
       youtube: ''
     },
     form: {
-      successMessage: 'Message sent. Thank you!'
+      successMessage: {
+        es: 'Mensaje enviado. ¡Gracias!',
+        en: 'Message sent. Thank you!'
+      }
     },
     backToTop: {
       text: 'Back to top',

@@ -168,7 +168,10 @@ export default defineNuxtSchema({
         /**
          * Success message.
          */
-        successMessage: 'Message sent. Thank you!'
+        successMessage: {
+          es: 'Mensaje enviado. ¡Gracias!',
+          en: 'Message sent. Thank you!'
+        }
       },
       /**
        * Back to top button configuration.
@@ -177,7 +180,10 @@ export default defineNuxtSchema({
        */
       backToTop: {
         icon: 'material-symbols:arrow-upward',
-        text: 'Back to top',
+        text: {
+          es: 'Volver arriba',
+          en: 'Back to top'
+        },
       }
     }
   }

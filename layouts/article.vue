@@ -35,7 +35,7 @@
         class="back-to-top"
       >
         <ProseA @click.prevent.stop="onBackToTop">
-          {{ alpine?.backToTop?.text || $t('article.backToTop') }}
+          {{ resolveLocaleValue(alpine?.backToTop?.text) || $t('article.backToTop') }}
           <Icon :name="alpine?.backToTop?.icon || 'material-symbols:arrow-upward'" />
         </ProseA>
       </div>
@@ -47,6 +47,12 @@
 const { page } = useContent()
 const route = useRoute()
 const alpine = useAppConfig().alpine
+const { locale } = useI18n()
+
+const resolveLocaleValue = (val: any) => {
+  if (typeof val === 'object' && val !== null) return val[locale.value] || val.es || Object.values(val)[0]
+  return val
+}
 
 const article = ref<HTMLElement | null>(null)
 

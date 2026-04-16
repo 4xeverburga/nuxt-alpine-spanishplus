@@ -1,5 +1,11 @@
 <script lang="ts" setup>
 const alpine = useAppConfig().alpine
+const { locale } = useI18n()
+
+const resolveLocaleValue = (val: any) => {
+  if (typeof val === 'object' && val !== null) return val[locale.value] || val.es || Object.values(val)[0]
+  return val
+}
 </script>
 
 <template>
@@ -17,7 +23,7 @@ const alpine = useAppConfig().alpine
     </div>
 
     <p v-if="alpine.footer?.message" class="message">
-      {{ alpine.footer.message }}
+      {{ resolveLocaleValue(alpine.footer.message) }}
     </p>
 
     <div class="icons">
