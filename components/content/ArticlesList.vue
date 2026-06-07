@@ -16,6 +16,7 @@ const props = defineProps({
 
 const currentYear = ref(parseInt(route.query.year as string) || new Date().getFullYear())
 const startYear = 2023
+const maxVisibleYearsWithoutGaps = 4
 const years = ref(Array.from({ length: new Date().getFullYear() - startYear + 1 }, (_, i) => new Date().getFullYear() - i))
 
 const fetchArticles = async (year: number) => {
@@ -49,6 +50,10 @@ const addGapMarkers = (visibleYears: number[]) => {
 }
 
 const yearButtons = computed(() => {
+  if (years.value.length <= maxVisibleYearsWithoutGaps) {
+    return years.value.slice().reverse()
+  }
+
   const currentIndex = years.value.indexOf(currentYear.value)
   const buttons: number[] = []
 
