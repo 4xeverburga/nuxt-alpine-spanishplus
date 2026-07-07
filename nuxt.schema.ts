@@ -73,7 +73,16 @@ export default defineNuxtSchema({
           /**
            * Alt description for the image.
            */
-          alt: 'Alpine theme logo'
+          alt: 'Alpine theme logo',
+          /**
+           * Link the logo points to.
+           *
+           * Accepts an internal path (e.g. '/') or an absolute external URL
+           * (e.g. 'https://example.com'). Defaults to the site root.
+           *
+           * @example 'https://example.com'
+           */
+          href: '/'
         }
       },
       /**

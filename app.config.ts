@@ -13,7 +13,8 @@ export default defineAppConfig({
       logo: {
         path: '/logo.svg',
         pathDark: '/logo-dark.svg',
-        alt: 'alpine'
+        alt: 'alpine',
+        href: '/'
       }
     },
     footer: {

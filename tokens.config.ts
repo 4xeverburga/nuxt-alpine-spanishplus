@@ -40,6 +40,11 @@ export default defineTheme({
   },
   color: {
     white: '#FFFFFF',
+    // Default accent color. Downstream projects (Nuxt layers extending this
+    // theme) can override it in their own `tokens.config.ts`, e.g.:
+    //   export default defineTheme({ color: { primary: theme.color.pear } })
+    // or with a fully custom palette (50-900 shades), e.g.:
+    //   export default defineTheme({ color: { primary: { 50: '#...', ..., 900: '#...' } } })
     // @ts-ignore
     primary: theme.color.lightblue
   },

@@ -21,13 +21,13 @@ const show = ref(false)
     </div>
 
     <div class="logo">
-      <NuxtLink v-if="alpine.header.logo" to="/">
+      <NuxtLink v-if="alpine.header.logo" :to="alpine.header.logo.href || '/'">
         <!-- TODO: width/height doesn't make much sense here, but Lighthouse requires it. 
         Used current Alpine logo ratio, will break on enduser logo -->
         <NuxtImg class="dark-img" :src="alpine.header.logo.pathDark" :alt="alpine.header.logo.alt" width="89" height="31" />
         <NuxtImg class="light-img" :src="alpine.header.logo.path" :alt="alpine.header.logo.alt" width="89" height="31" />
       </NuxtLink>
-      <NuxtLink v-else to="/" class="fallback">
+      <NuxtLink v-else :to="alpine.header.logo?.href || '/'" class="fallback">
         {{ alpine.title }}
       </NuxtLink>
     </div>
