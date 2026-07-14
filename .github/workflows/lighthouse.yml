@@ -34,9 +34,7 @@ jobs:
           urls: |
             http://localhost:3000/es
             http://localhost:3000/en
-          startServerCommand: pnpm preview
-          startServerReadyPattern: 'Listening'
-          startServerReadyTimeout: 30000
+          configPath: ./.github/lighthouse/lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
           budgetPath: ./.github/lighthouse/budget.json
