@@ -12,10 +12,8 @@
   "devDependencies": {
     "@4xeverburga/alpine-spanishplus": "workspace:*",
     "@nuxt/devtools": "^1.0.8",
-    "@nuxt/eslint-config": "^0.2.0",
     "@nuxtjs/plausible": "^0.2.4",
     "@types/node": "^22.0.0",
-    "eslint": "^8.57.0",
     "nuxt": "3.14.0"
   }
 }

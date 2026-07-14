@@ -45,7 +45,7 @@ export default defineTheme({
     //   export default defineTheme({ color: { primary: theme.color.pear } })
     // or with a fully custom palette (50-900 shades), e.g.:
     //   export default defineTheme({ color: { primary: { 50: '#...', ..., 900: '#...' } } })
-    // @ts-ignore
+    // @ts-expect-error theme colors aren't typed on the base palette
     primary: theme.color.lightblue
   },
   prose: {

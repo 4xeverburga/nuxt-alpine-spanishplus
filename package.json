@@ -39,10 +39,10 @@
     "@nuxtjs/i18n": "^8.5.5"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "^0.2.0",
+    "@nuxt/eslint-config": "^1.16.0",
     "@nuxtjs/plausible": "^0.2.4",
     "@types/node": "^22.0.0",
-    "eslint": "^8.56.0",
+    "eslint": "^10.7.0",
     "nuxt": "3.14.0",
     "release-it": "^16.3.0",
     "typescript": "^5.3.3",

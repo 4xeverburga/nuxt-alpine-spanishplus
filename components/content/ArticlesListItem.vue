@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useContentPreview } from '#imports'
-
 type Article = {
   _path: string
   title: string
@@ -9,7 +7,7 @@ type Article = {
   badges?: { bg: string, text: string, content: string }[]
 }
 
-const props = defineProps({
+defineProps({
   article: {
     type: Object,
     required: true,
@@ -24,17 +22,12 @@ const props = defineProps({
   }
 })
 
-const id = computed(() => {
-  // @ts-ignore
-  return (process.dev || useContentPreview()?.isEnabled()) ? props.article?._id : undefined
-})
 </script>
 
 <template>
   <article
     v-if="article._path && article.title"
     :class="{ 'featured': featured }"
-    :data-content-id="id"
   >
     <div v-if="article.cover" class="image">
       <div v-if="article?.badges">
