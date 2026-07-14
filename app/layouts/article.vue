@@ -44,7 +44,8 @@
 </template>
 
 <script setup lang="ts">
-const { page } = useContent()
+const props = defineProps<{ page?: any }>()
+const page = computed(() => props.page)
 const route = useRoute()
 const alpine = useAppConfig().alpine
 const { locale } = useI18n()

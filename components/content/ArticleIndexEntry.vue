@@ -1,6 +1,6 @@
 <script setup lang="ts">
 type Article = {
-  _path: string
+  path: string
   title: string
   date: string
   description: string
@@ -12,7 +12,7 @@ defineProps({
     type: Object,
     required: true,
     validator: (value: Article) => {
-      if (value?._path && value.title) { return true }
+      if (value?.path && value.title) { return true }
       return false
     }
   },
@@ -26,13 +26,13 @@ defineProps({
 
 <template>
   <article
-    v-if="article._path && article.title"
+    v-if="article.path && article.title"
     :class="{ 'layout': featured }"
 
   >
     <div class="content">
       <NuxtLink
-        :to="article._path"
+        :to="article.path"
         class="headline"
       >
         <h1>

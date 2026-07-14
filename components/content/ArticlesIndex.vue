@@ -10,25 +10,22 @@ const props = defineProps({
   }
 })
 
-const contentPath = computed(() => `${locale.value}/${props.path}`)
+const contentPath = computed(() => `/${locale.value}/${props.path}`)
 
-// @ts-expect-error queryContent path typing is looser than withTrailingSlash's return type
-const { data: _articles } = await useAsyncData(contentPath.value, async () => await queryContent(withTrailingSlash(contentPath.value)).sort({ date: -1 }).find())
+const { data: _articles } = await useAsyncData(contentPath.value, () =>
+  queryCollection('content').where('path', 'LIKE', `${contentPath.value}/%`).order('date', 'DESC').all()
+)
 
-// create new fields year and month
-// const articles = computed(() => _articles.value || [])
-const articles = computed(() => _articles.value.map((article) => {
+const articles = computed(() => (_articles.value || []).map((article) => {
   const date = new Date(article.date)
-  article.year = date.getFullYear()
-  article.month = date.getMonth()
-  return article
-}) || [])
+  return { ...article, year: date.getFullYear(), month: date.getMonth() }
+}))
 
 
 </script>
 
 <template>
-  <!-- TODO: group the outputs of article._path on each year and month -->
+  <!-- TODO: group the outputs of article.path on each year and month -->
   <ArticleIndexEntry  v-for="(article, index) in articles" :key="index" :article="article" />
   <!-- <d>DEBUG: articulo de indice 0 {{articles[0]}}</d> -->
 

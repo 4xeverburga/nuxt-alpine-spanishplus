@@ -1,6 +1,6 @@
 <script setup lang="ts">
 type Article = {
-  _path: string
+  path: string
   title: string
   date: string
   description: string
@@ -12,7 +12,7 @@ defineProps({
     type: Object,
     required: true,
     validator: (value: Article) => {
-      if (value?._path && value.title) { return true }
+      if (value?.path && value.title) { return true }
       return false
     }
   },
@@ -26,7 +26,7 @@ defineProps({
 
 <template>
   <article
-    v-if="article._path && article.title"
+    v-if="article.path && article.title"
     :class="{ 'featured': featured }"
   >
     <div v-if="article.cover" class="image">
@@ -42,7 +42,7 @@ defineProps({
           {{ typeof badge === 'string' ? badge : badge.content }}
         </span>
       </div>
-      <NuxtLink :to="article._path">
+      <NuxtLink :to="article.path">
         <NuxtImg
           :src="article.cover"
           :alt="article.title"
@@ -54,7 +54,7 @@ defineProps({
 
     <div class="content">
       <NuxtLink
-        :to="article._path"
+        :to="article.path"
         class="headline"
       >
         <h1>

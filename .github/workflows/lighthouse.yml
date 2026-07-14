@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --ignore-scripts
 
+      - name: Rebuild better-sqlite3 native binary
+        run: pnpm rebuild better-sqlite3
+
       - name: Build starter
         run: pnpm build
 
