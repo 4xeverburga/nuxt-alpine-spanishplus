@@ -28,15 +28,17 @@ jobs:
       - name: Build starter
         run: pnpm build
 
+      - name: Start preview server
+        run: |
+          pnpm preview &
+          npx wait-on http://localhost:3000/es --timeout 30000
+
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v11
         with:
           urls: |
             http://localhost:3000/es
             http://localhost:3000/en
-          startServerCommand: pnpm preview
-          startServerReadyPattern: 'Listening'
-          startServerReadyTimeout: 30000
           uploadArtifacts: true
           temporaryPublicStorage: true
           budgetPath: ./.github/lighthouse/budget.json
