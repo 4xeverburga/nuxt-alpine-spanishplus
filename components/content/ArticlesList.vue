@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { withTrailingSlash } from 'ufo'
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 

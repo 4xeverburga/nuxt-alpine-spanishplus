@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { withTrailingSlash } from 'ufo'
 import ArticleIndexEntry from './ArticleIndexEntry.vue';
 
 const { locale } = useI18n()
