@@ -75,7 +75,7 @@ const onSend = async (e: any) => {
     method: e.target.method,
     body: data,
     headers: {
-      'Accept': 'application/json'
+      Accept: 'application/json'
     }
   }).then(response => {
     if (response.ok) {
@@ -85,19 +85,19 @@ const onSend = async (e: any) => {
       // Handle errors from API
       response.json().then(data => {
         if (Object.hasOwn(data, 'errors')) {
-          status.value = data["errors"][0].message
-          console.error(data["errors"].map((error: any) => error["message"]).join(", "))
+          status.value = data['errors'][0].message
+          console.error(data['errors'].map((error: any) => error['message']).join(', '))
           setTimeout(() => {
             status.value = 'Send message'
           }, 2000)
         } else {
-          console.error("There was a problem submitting your form")
+          console.error('There was a problem submitting your form')
         }
       })
     }
   }).catch(() => {
     // Catch all other errors
-    console.error("There was a problem submitting your form")
+    console.error('There was a problem submitting your form')
   })
 }
 

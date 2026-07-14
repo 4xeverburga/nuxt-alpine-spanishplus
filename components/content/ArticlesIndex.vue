@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ArticleIndexEntry from './ArticleIndexEntry.vue';
+import ArticleIndexEntry from './ArticleIndexEntry.vue'
 
 const { locale } = useI18n()
 
@@ -12,7 +12,7 @@ const props = defineProps({
 
 const contentPath = computed(() => `${locale.value}/${props.path}`)
 
-// @ts-ignore
+// @ts-expect-error queryContent path typing is looser than withTrailingSlash's return type
 const { data: _articles } = await useAsyncData(contentPath.value, async () => await queryContent(withTrailingSlash(contentPath.value)).sort({ date: -1 }).find())
 
 // create new fields year and month
