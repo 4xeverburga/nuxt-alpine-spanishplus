@@ -8,13 +8,19 @@ defineProps({
   }
 })
 
-useHead({
-  meta: [
-    { name: 'twitter:card', content: 'summary_large_image' }
-  ]
+useSeoMeta({
+  title: alpine.title,
+  description: alpine.description,
+  ogTitle: alpine.title,
+  ogDescription: alpine.description,
+  ogImage: alpine.image && {
+    url: alpine.image.src,
+    alt: alpine.image.alt,
+    width: alpine.image.width,
+    height: alpine.image.height
+  },
+  twitterCard: 'summary_large_image'
 })
-
-useContentHead(alpine as any)
 </script>
 
 <template>

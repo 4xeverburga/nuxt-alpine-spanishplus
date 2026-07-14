@@ -8,7 +8,6 @@ const { resolve } = createResolver(import.meta.url)
 const envModules = {
   tokens: process?.env?.THEME_DEV_TOKENS_PATH || '@nuxt-themes/tokens',
   elements: process?.env?.THEME_DEV_ELEMENTS_PATH || '@nuxt-themes/elements',
-  studio: process?.env?.THEME_DEV_STUDIO_PATH || '@nuxthq/studio',
   typography: process?.env?.THEME_DEV_TYPOGRAPHY_PATH || '@nuxt-themes/typography'
 }
 
@@ -39,7 +38,7 @@ export default defineNuxtConfig({
   pages: true,
   modules: [
     envModules.tokens,
-    envModules.studio,
+    '@nuxt/icon',
     '@nuxt/content',
     '@nuxtjs/i18n',
     updateModule as any
@@ -51,7 +50,7 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'es',
     strategy: 'prefix',
-    langDir: 'i18n/locales',
+    langDir: 'locales',
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_locale',
@@ -69,23 +68,9 @@ export default defineNuxtConfig({
   colorMode: {
     classSuffix: ''
   },
-  pinceau: {
-    studio: true
+  experimental: {
+    asyncContext: true
   },
-  content: {
-    documentDriven: true,
-    navigation: {
-      fields: ['navTitle']
-    },
-    highlight: {
-      theme: {
-        default: 'github-light',
-        dark: 'github-dark'
-      },
-      preload: ['json', 'js', 'ts', 'html', 'css', 'vue', 'diff', 'shell', 'markdown', 'yaml', 'bash', 'ini', 'c', 'cpp']
-    }
-  },
-  experimental: {},
   typescript: {
     includeWorkspace: true
   },
