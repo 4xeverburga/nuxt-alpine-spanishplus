@@ -49,6 +49,11 @@ pnpm dev                         # Dev server (may OOM locally — test in consu
 
 **Important**: Any changes to `publish.yml` must be merged to `main` before they take effect.
 
+### Versioning Rules
+
+- **`dev` branch**: No version bump needed. The publish workflow auto-appends `-dev.<commit-hash>` to the version, so every push produces a unique version (e.g., `3.1.0-dev.f2f6949`).
+- **`main` branch**: You **must** bump the version in `package.json` before merging a PR to `main`. npm rejects publishing a version that already exists. Bump in its own commit: `chore: bump version to X.Y.Z`.
+
 ## Conventions
 
 - Branch `main` is protected — all changes via PR

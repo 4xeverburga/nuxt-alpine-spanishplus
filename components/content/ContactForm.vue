@@ -2,7 +2,12 @@
 import type { PropType } from 'vue'
 import type { Field } from '../../types/contact'
 const alpine = useAppConfig().alpine
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+const resolveLocaleValue = (val: any) => {
+  if (typeof val === 'object' && val !== null) return val[locale.value] || val.es || Object.values(val)[0]
+  return val
+}
 
 const { FORMSPREE_URL } = useRuntimeConfig().public
 
@@ -74,7 +79,7 @@ const onSend = async (e: any) => {
     }
   }).then(response => {
     if (response.ok) {
-      status.value = alpine.form.successMessage
+      status.value = resolveLocaleValue(alpine.form.successMessage)
       e.target.reset()
     } else {
       // Handle errors from API

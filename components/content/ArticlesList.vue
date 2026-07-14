@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { withTrailingSlash } from 'ufo'
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
@@ -16,6 +16,7 @@ const props = defineProps({
 
 const currentYear = ref(parseInt(route.query.year as string) || new Date().getFullYear())
 const startYear = 2023
+const maxVisibleYearsWithoutGaps = 4
 const years = ref(Array.from({ length: new Date().getFullYear() - startYear + 1 }, (_, i) => new Date().getFullYear() - i))
 
 const fetchArticles = async (year: number) => {
@@ -34,9 +35,27 @@ const updateYear = async (year: number) => {
   window.location.reload()
 }
 
+const addGapMarkers = (visibleYears: number[]) => {
+  const items: Array<number | string> = []
+
+  visibleYears.forEach((year, index) => {
+    if (index > 0 && year - visibleYears[index - 1] > 1) {
+      items.push('...')
+    }
+
+    items.push(year)
+  })
+
+  return items
+}
+
 const yearButtons = computed(() => {
+  if (years.value.length <= maxVisibleYearsWithoutGaps) {
+    return years.value.slice().reverse()
+  }
+
   const currentIndex = years.value.indexOf(currentYear.value)
-  const buttons = []
+  const buttons: number[] = []
 
   if (currentIndex > 1) {
     buttons.push(years.value[0])
@@ -56,34 +75,49 @@ const yearButtons = computed(() => {
     buttons.push(years.value[years.value.length - 1])
   }
 
-  return buttons.reverse()
+  return addGapMarkers(buttons.reverse())
 })
 
 </script>
 
 <template>
   <div>
-    <div v-if="articles?.length" class="articles-list">
-      <div class="featured">
-        <ArticlesListItem :article="articles[0]" :featured="true" />
+    <div
+      v-if="articles?.length"
+      class="articles-list"
+    >
+      <div
+        class="featured"
+      >
+        <ArticlesListItem
+          :article="articles[0]"
+          :featured="true"
+        />
       </div>
       <div class="layout">
-        <ArticlesListItem v-for="(article, index) in articles.slice(1)" :key="index" :article="article" />
+        <ArticlesListItem
+          v-for="(article, index) in articles.slice(1)"
+          :key="index"
+          :article="article"
+        />
       </div>
     </div>
-    <div v-else class="tour">
+    <div
+      v-else
+      class="tour"
+    >
       <p>{{ $t('articles.empty', { year: currentYear }) }}</p>
     </div>
-    <div class="spacing"> </div>
+    <div class="spacing" />
     <div class="navigation-buttons">
       <button
-        v-for="year in yearButtons"
-        :key="year"
-        :disabled="year === currentYear"
-        @click="updateYear(year)"
+        v-for="(item, index) in yearButtons"
+        :key="`${item}-${index}`"
+        :disabled="item === '...' || item === currentYear"
         class="nav-button"
+        @click="typeof item === 'number' && updateYear(item)"
       >
-        {{ year }}
+        {{ item }}
       </button>
     </div>
   </div>

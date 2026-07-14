@@ -73,7 +73,16 @@ export default defineNuxtSchema({
           /**
            * Alt description for the image.
            */
-          alt: 'Alpine theme logo'
+          alt: 'Alpine theme logo',
+          /**
+           * Link the logo points to.
+           *
+           * Accepts an internal path (e.g. '/') or an absolute external URL
+           * (e.g. 'https://example.com'). Defaults to the site root.
+           *
+           * @example 'https://example.com'
+           */
+          href: '/'
         }
       },
       /**
@@ -114,7 +123,10 @@ export default defineNuxtSchema({
          *
          * Leave it empty to disable.
          */
-        message: 'Follow me on'
+        message: {
+          es: 'Sígueme en',
+          en: 'Follow me on'
+        }
       },
       /**
        * Icons to be added to Social Icons in footer.
@@ -168,7 +180,10 @@ export default defineNuxtSchema({
         /**
          * Success message.
          */
-        successMessage: 'Message sent. Thank you!'
+        successMessage: {
+          es: 'Mensaje enviado. ¡Gracias!',
+          en: 'Message sent. Thank you!'
+        }
       },
       /**
        * Back to top button configuration.
@@ -177,7 +192,10 @@ export default defineNuxtSchema({
        */
       backToTop: {
         icon: 'material-symbols:arrow-upward',
-        text: 'Back to top',
+        text: {
+          es: 'Volver arriba',
+          en: 'Back to top'
+        },
       }
     }
   }
