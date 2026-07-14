@@ -28,7 +28,6 @@ defineProps({
   <article
     v-if="article._path && article.title"
     :class="{ 'featured': featured }"
-    :data-content-id="id"
   >
     <div v-if="article.cover" class="image">
       <div v-if="article?.badges">
