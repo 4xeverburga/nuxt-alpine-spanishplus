@@ -56,7 +56,7 @@ pnpm dev                         # Dev server (may OOM locally — test in consu
 
 ## Conventions
 
-- Branch `main` is protected — all changes via PR
+- Branch `main` is protected — all changes via PR from dev.
 - Version bumps go in their own commit: `chore: bump version to X.Y.Z`
 - CI workflows use `--ignore-scripts` for `pnpm install` to avoid `nuxi prepare` failures in CI
 - Components in `components/content/` and `components/data-entry/` are registered globally
