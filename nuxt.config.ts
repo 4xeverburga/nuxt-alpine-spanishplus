@@ -113,8 +113,26 @@ export default defineNuxtConfig({
   typescript: {
     includeWorkspace: true
   },
+  // Full static prerendering by default: this theme is built for content blogs where every
+  // page's content is known at build time, so there's no need to keep a dynamic SSR server
+  // running per-request. This also sidesteps a real Cloudflare Pages pitfall: `@nuxt/content`
+  // v3's Cloudflare preset forces its runtime database to Cloudflare D1 (binding `DB`) for any
+  // route rendered dynamically at request time — without a bound D1 database, every content
+  // route 500s (surfaced to visitors as a bare 404). Prerendering means content queries only
+  // run once at build time; the deployed worker never needs a runtime database at all, on
+  // Cloudflare Pages or any other host. Consumers with genuinely dynamic routes (auth, live
+  // data, etc.) can override this per-route via their own `routeRules`, e.g.
+  // `routeRules: { '/dashboard/**': { prerender: false } }`.
+  routeRules: {
+    '/**': { prerender: true }
+  },
   nitro: {
     prerender: {
+      // `/` itself only ever returns a 302 redirect to the default locale (no HTML body for
+      // the crawler to extract links from), so it can't discover anything on its own — seed
+      // the crawler with the actual locale roots this theme's i18n config always produces.
+      routes: ['/es', '/en'],
+      crawlLinks: true,
       ignore: ['/__pinceau_tokens_config.json', '/__pinceau_tokens_schema.json']
     }
   },
