@@ -49,3 +49,4 @@ jobs:
           uploadArtifacts: true
           temporaryPublicStorage: true
           budgetPath: ./.github/lighthouse/budget.json
+          configPath: ./.github/lighthouse/lighthouserc.json
