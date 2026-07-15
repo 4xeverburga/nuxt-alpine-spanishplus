@@ -81,6 +81,21 @@ describe('NuxtImg / @nuxt/image', () => {
     const optimizedImgTags = imgTags.filter(tag => tag.includes('data-nuxt-img'))
     expect(optimizedImgTags.length).toBe(imgTags.length)
   })
+
+  it('requests a legible resolution, not a tiny literal 16x9 aspect-ratio placeholder', async () => {
+    const html = await (await fetch(`${BASE_URL}/es`)).text()
+
+    // Regression: Hero/Gallery/ArticlesListItem passed `width="16" height="9"` to `<NuxtImg>`
+    // intending it as a 16:9 aspect-ratio hint (CSS handles the actual display size). Before
+    // NuxtImg resolved to the real @nuxt/image component, this was harmless — the colliding
+    // stub ignored width/height for resizing. Once NuxtImg started actually optimizing images,
+    // the same values were taken literally as resize targets, silently fetching a genuine
+    // 16x9px image and stretching it via CSS — blurry/illegible at any real display size.
+    // (The header logo legitimately is ~89px wide, so this checks for the exact broken literal
+    // 16x9/32x18 pattern rather than a blanket minimum width.)
+    expect(html).not.toMatch(/\/_ipx\/s_16x9\//)
+    expect(html).not.toMatch(/\/_ipx\/s_32x18\//)
+  })
 })
 
 describe('smoke test', () => {

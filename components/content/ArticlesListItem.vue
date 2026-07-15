@@ -46,8 +46,8 @@ defineProps({
         <NuxtImg
           :src="article.cover"
           :alt="article.title"
-          width="16"
-          height="9"
+          :width="640"
+          :height="360"
         />
       </NuxtLink>
     </div>

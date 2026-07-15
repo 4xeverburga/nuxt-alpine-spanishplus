@@ -35,8 +35,8 @@ defineProps({
         :class="imagePosition"
         :src="image"
         :alt="imageAlt"
-        :width="16"
-        :height="9"
+        :width="960"
+        :height="540"
       />
     </div>
   </section>
