@@ -37,13 +37,24 @@ pnpm install --ignore-scripts   # Install deps (skip prepare to avoid jiti issue
 pnpm rebuild better-sqlite3     # --ignore-scripts also skips its native build; do this once after install
 pnpm build                       # Build via .starters/default
 pnpm dev                         # Dev server (may OOM locally — test in consumer project instead)
+pnpm test                        # Runs the vitest regression suite (test/theme.test.ts) against a real build
 ```
 
 **Local testing workflow**: Pack the theme (`pnpm pack`) and install the tgz in a consumer project like `meblog`, then run `npm run dev` there. The starter dev server has memory issues.
 
+## Testing
+
+- **`test/theme.test.ts`**: Vitest regression suite. Deliberately does NOT use `@nuxt/test-utils`'s in-process build (it pulls in a `magic-string`/`@vue/compiler-sfc` version conflict with this dependency graph — `MagicString is not a constructor`). Instead it runs a real `nuxi build .starters/default` in a child process (`execFileSync`), starts the built server (`node .output/server/index.mjs`) as its own process, and asserts against the actual HTTP response with plain `fetch()` — the same manual steps used to discover both regressions below in the first place.
+- Covers two regressions that were previously **completely silent** (zero errors/warnings at build or dev time) and only became visible when reading the actual generated CSS/HTML:
+  1. Pinceau's `@sm`/`@md`/`@lg` custom-media transform resolving into real `@media (min-width:...)` queries (broke site-wide when `@nuxt-themes/elements` was removed — see Tech Stack note above).
+  2. `<NuxtImg>` resolving to the real `@nuxt/image` component (`data-nuxt-img` attribute present, `src` rewritten through a provider) instead of `@nuxt-themes/elements`'s colliding stub.
+- The `test` script runs `nuxi prepare .starters/default` before `vitest run` — required so the root `tsconfig.json`'s `extends: "./.starters/default/.nuxt/tsconfig.json"` resolves before Vitest transforms the test file itself; without it, Vitest fails to even load the test file with a `TSConfckParseError`, before the build in `beforeAll` gets a chance to generate that file.
+- CI: **`test.yml`** runs `pnpm test` on push/PR to `dev` and `main`.
+
 ## CI/CD
 
 - **`ci.yml`** / **`ci-dev.yml`**: Build validation on `main` / `dev` branches
+- **`test.yml`**: Runs the vitest regression suite (see Testing) on `main` / `dev` branches and PRs targeting them
 - **`publish.yml`**: Triggered by `workflow_run` after CI success. Publishes to **two registries**:
   1. **npmjs.org** as `@4xeverburga/alpine-spanishplus` — uses npm OIDC trusted publishing (no `NPM_TOKEN`)
   2. **GitHub Packages** (`npm.pkg.github.com`) as `@4xeverburga/alpine-spanishplus` — uses `GITHUB_TOKEN` with `packages:write` permission.
