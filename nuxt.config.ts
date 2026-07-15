@@ -1,12 +1,16 @@
-import { createResolver, logger, defineNuxtModule } from '@nuxt/kit'
+import { createRequire } from 'node:module'
+import { dirname, join } from 'node:path'
+import { createResolver, logger, defineNuxtModule, addComponent } from '@nuxt/kit'
 import { $fetch } from 'ofetch'
 import { version } from './package.json'
 
 const { resolve } = createResolver(import.meta.url)
+const require = createRequire(import.meta.url)
 
 // That allows to overwrite these dependencies paths via `.env` for local development
 const envModules = {
   tokens: process?.env?.THEME_DEV_TOKENS_PATH || '@nuxt-themes/tokens',
+  elements: process?.env?.THEME_DEV_ELEMENTS_PATH || '@nuxt-themes/elements',
   typography: process?.env?.THEME_DEV_TYPOGRAPHY_PATH || '@nuxt-themes/typography'
 }
 
@@ -25,10 +29,40 @@ const updateModule = defineNuxtModule({
   }
 })
 
+// `@nuxt-themes/elements` is kept as an extended layer even though none of its components are
+// used directly: removing it broke Pinceau's postcss custom-media transform (`@sm`/`@md`/etc.
+// stopped resolving to real `@media` queries at all, silently breaking every responsive layout
+// in the theme). Verified via bisection: re-adding just this layer (nothing else changed) fixes
+// it; the exact mechanism lives deep in an old, unmaintained toolchain (Pinceau + magicast + c12)
+// not worth reverse-engineering further given elements costs nothing functionally to keep.
+//
+// It also ships its own global `components/globals/NuxtImg.vue` (a plain light/dark <img> swap
+// helper) under the exact same component name as `@nuxt/image`'s real `NuxtImg`/`NuxtPicture`.
+// Without this override, that stub silently wins the name collision and every `<NuxtImg>` in
+// this theme (and in consumers) renders an unoptimized <img> with no resizing/format conversion.
+const nuxtImageOverride = defineNuxtModule({
+  meta: {
+    name: 'alpine-nuxt-image-override'
+  },
+  setup () {
+    const nuxtImageDist = dirname(require.resolve('@nuxt/image'))
+    addComponent({
+      name: 'NuxtImg',
+      filePath: join(nuxtImageDist, 'runtime/components/NuxtImg.vue'),
+      priority: 10
+    })
+    addComponent({
+      name: 'NuxtPicture',
+      filePath: join(nuxtImageDist, 'runtime/components/NuxtPicture.vue'),
+      priority: 10
+    })
+  }
+})
+
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
   app: {},
-  extends: [envModules.typography],
+  extends: [envModules.typography, envModules.elements],
   runtimeConfig: {
     public: {
       FORMSPREE_URL: process.env.FORMSPREE_URL
@@ -41,7 +75,8 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxt/image',
     '@nuxtjs/i18n',
-    updateModule as any
+    updateModule as any,
+    nuxtImageOverride as any
   ],
   // Provider is intentionally left unset here: it defaults to `ipx` (works anywhere).
   // Each consumer chooses its own hosting provider (e.g. `cloudflare`, `vercel`) via
