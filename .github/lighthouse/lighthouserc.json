@@ -1,0 +1,9 @@
+{
+  "ci": {
+    "collect": {
+      "settings": {
+        "blockedUrlPatterns": ["**/_ipx/**", "*.svg", "*.webp", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.avif"]
+      }
+    }
+  }
+}
