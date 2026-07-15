@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { withTrailingSlash } from 'ufo'
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -20,8 +19,10 @@ const maxVisibleYearsWithoutGaps = 4
 const years = ref(Array.from({ length: new Date().getFullYear() - startYear + 1 }, (_, i) => new Date().getFullYear() - i))
 
 const fetchArticles = async (year: number) => {
-  const path = `${locale.value}/${props.path}/${year}`
-  const { data } = await useAsyncData(path, async () => await queryContent(withTrailingSlash(path)).sort({ date: -1 }).find())
+  const path = `/${locale.value}/${props.path}/${year}`
+  const { data } = await useAsyncData(path, () =>
+    queryCollection('content').where('path', 'LIKE', `${path}/%`).order('date', 'DESC').all()
+  )
   return data
 }
 

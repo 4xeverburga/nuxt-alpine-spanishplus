@@ -27,14 +27,19 @@ export default defineTheme({
     },
     readableLine: '68ch'
   },
-  elements: {
+  layout: {
     container: {
       maxWidth: '64rem',
+      // Pinceau fails to resolve `{space.N}` references from this config specifically once
+      // `@nuxt-themes/elements` is no longer extended as a layer (a pre-existing, unexplained
+      // reference-resolution quirk in this version of Pinceau/style-dictionary-esm — the
+      // `space` scale itself is defined fine and used elsewhere without issue). Using the
+      // literal rem values (equal to space.6/8/12/16) sidesteps it entirely.
       padding: {
-        mobile: '{space.6}',
-        xs: '{space.8}',
-        sm: '{space.12}',
-        md: '{space.16}'
+        mobile: '1.5rem',
+        xs: '2rem',
+        sm: '3rem',
+        md: '4rem'
       }
     }
   },
@@ -45,7 +50,7 @@ export default defineTheme({
     //   export default defineTheme({ color: { primary: theme.color.pear } })
     // or with a fully custom palette (50-900 shades), e.g.:
     //   export default defineTheme({ color: { primary: { 50: '#...', ..., 900: '#...' } } })
-    // @ts-ignore
+    // @ts-expect-error theme colors aren't typed on the base palette
     primary: theme.color.lightblue
   },
   prose: {
