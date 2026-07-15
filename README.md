@@ -2,6 +2,8 @@
 
 Fork en español del tema [Alpine](https://github.com/nuxt-themes/alpine) de Nuxt, empaquetado como capa reutilizable para sitios basados en Nuxt Content.
 
+**[Ver demo en vivo →](https://4xeverburga.github.io/nuxt-alpine-spanishplus/)** (starter interno desplegado en GitHub Pages)
+
 ## Características
 
 - Capa de tema Nuxt: extiende configuración, layouts, componentes, estilos y utilidades
@@ -86,8 +88,10 @@ Vincula el paquete con `pnpm link` y úsalo como dependencia enlazada en tu proy
 |---|---|---|---|
 | ci-main | `.github/workflows/ci.yml` | `main` | Valida build en push y PR |
 | ci-dev | `.github/workflows/ci-dev.yml` | `dev` | Valida build en push y PR |
+| test | `.github/workflows/test.yml` | `main` / `dev` | Corre la suite de regresión de Vitest (`test/theme.test.ts`) |
+| lighthouse | `.github/workflows/lighthouse.yml` | PR hacia `dev` / `main` | Audita rendimiento del starter interno contra `.github/lighthouse/budget.json` |
 | publish | `.github/workflows/publish.yml` | `main` / `dev` | Publica en npm: `latest` desde main, `-dev` con dist-tag `dev` desde dev |
-| studio | `.github/workflows/studio.yml` | `main` | Genera sitio estático y despliega a GitHub Pages |
+| demo | `.github/workflows/demo.yml` | `main` | Compila el starter interno (`GITHUB_PAGES=true`) y lo despliega en [GitHub Pages](https://4xeverburga.github.io/nuxt-alpine-spanishplus/) |
 
 Los workflows de publicación usan [trusted publishing (OIDC)](https://docs.npmjs.com/generating-provenance-statements#publishing-packages-with-provenance-via-trusted-publishing) en lugar de tokens. Para configurarlo:
 
