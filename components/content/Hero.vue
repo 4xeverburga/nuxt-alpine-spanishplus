@@ -20,14 +20,14 @@ defineProps({
     <div class="layout">
       <div class="content">
         <div class="title">
-          <ContentSlot :use="$slots.title" unwrap="p">
+          <MDCSlot name="title" unwrap="p">
             Hero title
-          </ContentSlot>
+          </MDCSlot>
         </div>
         <div class="description">
-          <ContentSlot :use="$slots.description" unwrap="p">
+          <MDCSlot name="description" unwrap="p">
             Hero description
-          </ContentSlot>
+          </MDCSlot>
         </div>
       </div>
       <NuxtImg
@@ -35,8 +35,8 @@ defineProps({
         :class="imagePosition"
         :src="image"
         :alt="imageAlt"
-        :width="16"
-        :height="9"
+        :width="960"
+        :height="540"
       />
     </div>
   </section>

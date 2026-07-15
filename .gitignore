@@ -26,3 +26,6 @@ tailwind.config.js.local
 .starters/**/pnpm-lock.yaml
 
 *.tgz
+
+# Nuxt Content v3 local SQLite database
+.data

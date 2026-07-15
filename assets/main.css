@@ -3,6 +3,15 @@ body {
   color: $dt('alpine.body.color');
 }
 
+/* @nuxt/content v3 renders code blocks via @nuxtjs/mdc's ProsePre.vue, which outputs a bare
+   `<pre class="language-xxx shiki ...">` with no width/overflow CSS at all (@nuxt-themes/
+   typography's own ProseCode.vue, which did handle this, is not used by content v3). Without
+   this, long lines bleed past the article's content column instead of scrolling. */
+pre.shiki {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
 /* Color scheme images helper classes */
 .light-img {
   display: block;

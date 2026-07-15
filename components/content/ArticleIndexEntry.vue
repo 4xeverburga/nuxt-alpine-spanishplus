@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { useContentPreview } from '#imports'
-
 type Article = {
-  _path: string
+  path: string
   title: string
   date: string
   description: string
   badges?: { bg: string, text: string, content: string }[]
 }
 
-const props = defineProps({
+defineProps({
   article: {
     type: Object,
     required: true,
     validator: (value: Article) => {
-      if (value?._path && value.title) { return true }
+      if (value?.path && value.title) { return true }
       return false
     }
   },
@@ -24,21 +22,17 @@ const props = defineProps({
   }
 })
 
-const id = computed(() => {
-  // @ts-ignore
-  return (process.dev || useContentPreview()?.isEnabled()) ? props.article?._id : undefined
-})
 </script>
 
 <template>
   <article
-    v-if="article._path && article.title"
+    v-if="article.path && article.title"
     :class="{ 'layout': featured }"
 
   >
     <div class="content">
       <NuxtLink
-        :to="article._path"
+        :to="article.path"
         class="headline"
       >
         <h1>
