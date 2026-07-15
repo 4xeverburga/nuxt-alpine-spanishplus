@@ -124,7 +124,14 @@ export default defineNuxtConfig({
   // data, etc.) can override this per-route via their own `routeRules`, e.g.
   // `routeRules: { '/dashboard/**': { prerender: false } }`.
   routeRules: {
-    '/**': { prerender: true }
+    '/**': { prerender: true },
+    // `@nuxt/image`'s `ipx` routes are resized on demand and don't exist as real content
+    // pages — crawling them at build time requires `sharp`, which isn't available in most
+    // CI/Cloudflare build environments and fails the whole prerender step with 500s. Leave
+    // them dynamic; they still resolve normally at actual request time on hosts that support
+    // `ipx` (or get redirected to that host's own image provider, e.g. Cloudflare's own
+    // `cloudflare` provider, which never even generates `/_ipx/` URLs in the first place).
+    '/_ipx/**': { prerender: false }
   },
   nitro: {
     prerender: {
