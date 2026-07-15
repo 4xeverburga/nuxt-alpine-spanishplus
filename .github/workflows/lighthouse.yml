@@ -29,6 +29,9 @@ jobs:
       - name: Rebuild better-sqlite3 native binary
         run: pnpm rebuild better-sqlite3
 
+      - name: Rebuild sharp native binary
+        run: pnpm rebuild sharp
+
       - name: Build starter
         run: pnpm build
 
