@@ -22,6 +22,36 @@ export default defineNuxtConfig({
 })
 ```
 
+## Despliegue: prerenderizado estático por defecto
+
+Este tema genera el sitio como **estático por defecto** (`routeRules: { '/**': { prerender: true } }`), pensado para blogs de contenido donde todo se conoce en tiempo de build. Esto evita un problema real en Cloudflare Pages: `@nuxt/content` v3 fuerza su base de datos en tiempo de ejecución a Cloudflare D1 (binding `DB`) para cualquier ruta renderizada dinámicamente — sin una base D1 vinculada, cada ruta de contenido falla en el servidor y se ve como un 404 genérico ante el visitante, no como un error de base de datos.
+
+Si tu proyecto necesita rutas realmente dinámicas (auth, datos en vivo, etc.), puedes desactivar el prerenderizado por ruta desde tu propio `nuxt.config.ts`:
+
+```ts
+export default defineNuxtConfig({
+  extends: '@4xeverburga/alpine-spanishplus',
+  routeRules: {
+    '/dashboard/**': { prerender: false }
+  }
+})
+```
+
+**Si despliegas en Cloudflare Pages**, además del prerenderizado hay una limitación propia de Cloudflare a tener en cuenta: el preset `cloudflare_pages` genera un `_worker.js` con un `_routes.json` que tiene un tope duro de **100 entradas**. Si tu sitio supera ese número de páginas prerenderizadas (artículos, por ejemplo), algunas páginas caen silenciosamente al worker en vez de servirse como archivos estáticos, reproduciendo el mismo problema de D1 solo para esas rutas. La solución es forzar el preset `cloudflare_pages_static` (que omite el worker por completo) en el build de Cloudflare:
+
+```ts
+export default defineNuxtConfig({
+  extends: '@4xeverburga/alpine-spanishplus',
+  nitro: {
+    preset: process.env.CF_PAGES ? 'cloudflare_pages_static' : undefined
+  }
+})
+```
+
+Cualquier ruta de servidor propia (`server/routes/*.ts`) que no esté enlazada con un `<a href>` real en el sitio no será descubierta por el crawler de prerenderizado — agrégala explícitamente a `nitro.prerender.routes` en tu propio `nuxt.config.ts`.
+
+**En Vercel** (u otros hosts sin este requisito de D1 ni límite de rutas) el mismo prerenderizado por defecto simplemente produce un sitio estático normal, sin configuración adicional.
+
 ## Desarrollo local
 
 ```bash
