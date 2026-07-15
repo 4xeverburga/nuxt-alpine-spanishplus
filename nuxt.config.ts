@@ -140,6 +140,15 @@ export default defineNuxtConfig({
       // the crawler with the actual locale roots this theme's i18n config always produces.
       routes: ['/es', '/en'],
       crawlLinks: true,
+      // With `@nuxtjs/i18n`'s `useSwitchLocalePath()` (used by `LanguageSwitcher`), every
+      // page links to its own path under every OTHER locale, regardless of whether a
+      // translation actually exists for that specific piece of content — completely normal
+      // for a bilingual blog where not every article/page is translated. The crawler treats
+      // any discovered 404 as fatal by default, which would otherwise abort the whole build
+      // over expected, harmless missing-translation links. `failOnError: false` logs these
+      // instead of failing the build; genuinely broken (non-content-gap) errors would still
+      // show up in that log for a human to notice.
+      failOnError: false,
       ignore: ['/__pinceau_tokens_config.json', '/__pinceau_tokens_schema.json']
     }
   },

@@ -12,11 +12,16 @@ const props = defineProps({
 
 const contentPath = computed(() => `/${locale.value}/${props.path}`)
 
-const { data: _articles } = await useAsyncData(contentPath.value, () =>
+// Namespaced (not just the bare content path) so this can never collide with another
+// `useAsyncData` call using the same path as its key elsewhere in the app — Nitro's
+// static prerenderer renders multiple routes concurrently and shares the Nuxt payload
+// cache across them, so two calls with an identical key can otherwise race and one can
+// observe the other's still-pending promise instead of the resolved array.
+const { data: _articles } = await useAsyncData(`articles-index:${contentPath.value}`, () =>
   queryCollection('content').where('path', 'LIKE', `${contentPath.value}/%`).order('date', 'DESC').all()
 )
 
-const articles = computed(() => (_articles.value || []).map((article) => {
+const articles = computed(() => (Array.isArray(_articles.value) ? _articles.value : []).map((article) => {
   const date = new Date(article.date)
   return { ...article, year: date.getFullYear(), month: date.getMonth() }
 }))
