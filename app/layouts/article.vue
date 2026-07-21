@@ -93,7 +93,7 @@ const onBackToTop = () => {
 <style scoped lang="ts">
 css({
   article: {
-    maxWidth: '{alpine.readableLine}',
+    maxWidth: '{layout.container.maxWidth}',
     mx: 'auto',
     py: '{space.4}',
     '@sm': {
@@ -130,6 +130,8 @@ css({
       marginLeft: '8px',
     },
     '.prose': {
+      maxWidth: '{alpine.readableLine}',
+      mx: 'auto',
       '.back-to-top': {
         display: 'flex',
         justifyContent: 'flex-end',
@@ -142,6 +144,37 @@ css({
       },
       '& :deep(h1)': {
         display: 'none'
+      },
+      // Escapes the narrow readable-line column so a specific element (e.g. a hero image)
+      // can span the same width as the navbar/Container, regardless of how narrow the
+      // surrounding prose text is. `.hero-breakout` uses the classic full-bleed vw trick to
+      // break out of its (narrow) parent; `.hero-breakout-inner` then re-applies the exact
+      // same maxWidth + responsive padding tokens as `Container.vue`, so its content width is
+      // pixel-identical to the navbar's content width at every breakpoint.
+      '& :deep(.hero-breakout)': {
+        width: '100vw',
+        position: 'relative',
+        left: '50%',
+        right: '50%',
+        marginLeft: '-50vw',
+        marginRight: '-50vw',
+      },
+      '& :deep(.hero-breakout-inner)': {
+        maxWidth: '{layout.container.maxWidth}',
+        mx: 'auto',
+        px: '{layout.container.padding.mobile}',
+        '@xs': {
+          px: '{layout.container.padding.xs}',
+        },
+        '@sm': {
+          px: '{layout.container.padding.sm}',
+        },
+        '@md': {
+          px: '{layout.container.padding.md}',
+        },
+        img: {
+          width: '100%',
+        },
       },
     }
   }
