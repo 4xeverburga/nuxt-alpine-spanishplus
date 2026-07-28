@@ -13,6 +13,7 @@ useSeoMeta({
   description: alpine.description,
   ogTitle: alpine.title,
   ogDescription: alpine.description,
+  ogSiteName: alpine.siteName || alpine.title,
   ogImage: alpine.image && {
     url: alpine.image.src,
     alt: alpine.image.alt,
