@@ -11,6 +11,10 @@ defineProps({
   imagePosition: {
     type: String,
     default: 'right'
+  },
+  imageRound: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
@@ -32,11 +36,11 @@ defineProps({
       </div>
       <NuxtImg
         v-if="image"
-        :class="imagePosition"
+        :class="[imagePosition, { round: imageRound }]"
         :src="image"
         :alt="imageAlt"
         :width="960"
-        :height="540"
+        :height="960"
       />
     </div>
   </section>
@@ -69,6 +73,13 @@ css({
         borderRadius: '{radii.md}',
         '&.left': {
           order: -1
+        },
+        '&.round': {
+          aspectRatio: '1 / 1',
+          borderRadius: '9999px',
+          maxWidth: '320px',
+          margin: '0 auto',
+          display: 'block'
         }
       },
     }
