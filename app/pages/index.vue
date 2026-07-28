@@ -12,22 +12,28 @@ const appConfig = useAppConfig()
 const { public: { siteUrl } } = useRuntimeConfig()
 const siteName = appConfig.alpine.siteName || appConfig.alpine.title
 
+// Consumers that don't define runtimeConfig.public.siteUrl (e.g. this theme's own starter)
+// simply don't get the schema, rather than throwing on `siteUrl.replace(...)` with undefined
+// - which previously hung the prerender build entirely (the failing route's error stalled the
+// crawler instead of surfacing a clean error).
 useHead({
-  script: [
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: siteName,
-        alternateName: [
-          ...(appConfig.alpine.siteAlternateNames || []),
-          siteUrl.replace(/^https?:\/\//, '')
-        ],
-        url: siteUrl
-      })
-    }
-  ]
+  script: siteUrl
+    ? [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: siteName,
+            alternateName: [
+              ...(appConfig.alpine.siteAlternateNames || []),
+              siteUrl.replace(/^https?:\/\//, '')
+            ],
+            url: siteUrl
+          })
+        }
+      ]
+    : []
 })
 </script>
 
