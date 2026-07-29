@@ -62,7 +62,7 @@ if (page.value) {
   const metaArray = []
   
   if (page.value.cover) {
-    metaArray.push({ property: 'og:image', content: page.value.cover })
+    metaArray.push({ property: 'og:image', content: toAbsoluteUrl(page.value.cover) })
   }
   if (page.value.canonical) {
     linkArray.push({ rel: 'canonical', href: page.value.canonical })
@@ -73,13 +73,17 @@ if (page.value) {
   })
 }
 
+// Article paths look like `/{locale}/{section}/{year}/{month}/{slug}` (e.g.
+// `/es/articles/2024/diciembre/haikus`). The parent to go "back" to is the section's
+// year archive (`/es/articles/2024`), which is a real, crawlable route — not just the bare
+// section index — so the back link preserves the exact year the reader was browsing.
+// `filter(Boolean)` (rather than a fixed `pop()` count) also makes this immune to a stray
+// trailing slash in `route.path` (e.g. from a shared link or a proxy normalizing URLs),
+// which previously threw off the pop-count and produced a broken, non-existent link.
 const parentPath = computed(
   () => {
-    const pathTabl = route.path.split('/')
-    pathTabl.pop()
-    pathTabl.pop()
-    pathTabl.pop()
-    return pathTabl.join('/')
+    const segments = route.path.split('/').filter(Boolean)
+    return `/${segments.slice(0, 3).join('/')}`
   }
 )
 

@@ -1,19 +1,23 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
 
-const router = useRouter()
-const route = useRoute()
 const { locale } = useI18n()
 
 const props = defineProps({
   path: {
     type: String,
     default: 'articles'
+  },
+  // Real route param (`/articles/2024`) when browsing a specific year's archive, passed down
+  // by `app/pages/articles/[year].vue`. Left undefined on the bare `/articles` index page,
+  // which falls back to the current year below.
+  year: {
+    type: Number,
+    default: undefined
   }
 })
 
-const currentYear = ref(parseInt(route.query.year as string) || new Date().getFullYear())
+const currentYear = computed(() => props.year ?? new Date().getFullYear())
 const startYear = 2023
 const maxVisibleYearsWithoutGaps = 4
 const years = ref(Array.from({ length: new Date().getFullYear() - startYear + 1 }, (_, i) => new Date().getFullYear() - i))
@@ -30,11 +34,12 @@ const _articles = ref(await fetchArticles(currentYear.value))
 
 const articles = computed(() => _articles.value || [])
 
-const updateYear = async (year: number) => {
-  currentYear.value = year
-  await router.push({ query: { year: currentYear.value } })
-  window.location.reload()
-}
+// Real navigation to `/{locale}/{path}/{year}` instead of a query-param + reload hack: gives
+// each year archive its own crawlable, indexable static URL (better SEO) and makes the
+// article "back" link land on a real page, since it derives the parent path from
+// `route.path` segments — a real path segment survives that derivation; a query param does
+// not.
+const yearLink = (year: number) => `/${locale.value}/${props.path}/${year}`
 
 const addGapMarkers = (visibleYears: number[]) => {
   const items: Array<number | string> = []
@@ -111,15 +116,24 @@ const yearButtons = computed(() => {
     </div>
     <div class="spacing" />
     <div class="navigation-buttons">
-      <button
+      <template
         v-for="(item, index) in yearButtons"
         :key="`${item}-${index}`"
-        :disabled="item === '...' || item === currentYear"
-        class="nav-button"
-        @click="typeof item === 'number' && updateYear(item)"
       >
-        {{ item }}
-      </button>
+        <span
+          v-if="item === '...' || item === currentYear"
+          class="nav-button"
+        >
+          {{ item }}
+        </span>
+        <NuxtLink
+          v-else
+          :to="yearLink(Number(item))"
+          class="nav-button"
+        >
+          {{ item }}
+        </NuxtLink>
+      </template>
     </div>
   </div>
 </template>
@@ -163,12 +177,16 @@ css({
     display: 'flex',
     justifyContent: 'center',
     marginTop: '20px',
-    button: {
+    '.nav-button': {
+      display: 'inline-block',
       padding: '10px 20px',
       fontSize: '16px',
       cursor: 'pointer',
-      '&:disabled': {
-      // cursor: 'not-allowed', not quite good looking
+      textDecoration: 'none',
+      color: 'inherit',
+      '&:is(span)': {
+        // Current year / gap marker: not a real link, styled as inactive.
+        cursor: 'default',
         opacity: 0.5,
       }
     }
