@@ -14,5 +14,14 @@ export default defineNuxtConfig({
   // for the domain root as normal.
   app: {
     baseURL: process.env.GITHUB_PAGES ? '/nuxt-alpine-spanishplus/' : '/'
+  },
+  // A real consumer (e.g. `meblog`) always sets `runtimeConfig.public.siteUrl` - the starter
+  // needs one too so `toAbsoluteUrl` (app/composables/path.ts) has something to resolve
+  // og:image/twitter:image against, and so the theme's own test suite can assert those tags
+  // are absolute URLs, not root-relative paths (see the regression this guards against).
+  runtimeConfig: {
+    public: {
+      siteUrl: 'https://example.com'
+    }
   }
 })

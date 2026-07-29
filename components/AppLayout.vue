@@ -15,7 +15,9 @@ useSeoMeta({
   ogDescription: alpine.description,
   ogSiteName: alpine.siteName || alpine.title,
   ogImage: alpine.image && {
-    url: alpine.image.src,
+    // Must be absolute - see toAbsoluteUrl's comment (app/composables/path.ts) for why a
+    // relative default image src silently breaks link previews on nested routes.
+    url: toAbsoluteUrl(alpine.image.src),
     alt: alpine.image.alt,
     width: alpine.image.width,
     height: alpine.image.height

@@ -98,6 +98,24 @@ describe('NuxtImg / @nuxt/image', () => {
   })
 })
 
+describe('Open Graph image meta tags', () => {
+  it('renders og:image as a fully-qualified absolute URL, not a root-relative path', async () => {
+    const html = await (await fetch(`${BASE_URL}/es`)).text()
+
+    // Regression: og:image (and article covers, via the same `toAbsoluteUrl` helper) used
+    // to be emitted as the raw root-relative frontmatter/app-config path (e.g.
+    // "/social-card-preview.png"). Open Graph requires an absolute URL - left relative, many
+    // link-preview tools/crawlers resolve it with a naive string concat against the *current
+    // page's URL* instead of a proper relative-URL resolution against the origin, silently
+    // producing a broken, duplicated image URL on any nested route (e.g.
+    // ".../articles/2026/july/foo/articles/2026/july/foo-cover.svg" instead of
+    // ".../articles/2026/july/foo-cover.svg") even though the file itself exists.
+    const match = html.match(/<meta property="og:image" content="([^"]+)">/)
+    expect(match).not.toBeNull()
+    expect(match![1]).toMatch(/^https?:\/\//)
+  })
+})
+
 describe('smoke test', () => {
   it('builds and serves the starter successfully', async () => {
     const html = await (await fetch(`${BASE_URL}/es`)).text()
