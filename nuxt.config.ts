@@ -59,9 +59,28 @@ const nuxtImageOverride = defineNuxtModule({
   }
 })
 
+// Single source of truth for the default locale: referenced both by `i18n.defaultLocale` and by
+// the `/` -> `/<locale>` routeRules redirect below, so they can never drift apart.
+const i18nDefaultLocale = 'es'
+
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  app: {},
+  app: {
+    // Without an explicit viewport meta tag, mobile browsers fall back to a wide desktop-style
+    // layout viewport (~980px) and render the page already zoomed out to fit it — from that
+    // already-zoomed-out state, pinch-zooming out further has no natural floor and users can
+    // shrink the page to an illegibly tiny size. `width=device-width, initial-scale=1` fixes the
+    // layout viewport to the real device width (the actual responsive-design fix), and
+    // `minimum-scale=1` stops pinch-zoom from going below that normal 1:1 size. `maximum-scale=5`
+    // (well above the default ~3) still lets readers pinch-zoom IN generously, e.g. to inspect
+    // detail in article images/diagrams. `user-scalable=yes` keeps zoom-in enabled (some very old
+    // guidance sets `user-scalable=no`, which would also block zooming in — not wanted here).
+    head: {
+      meta: [
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes' }
+      ]
+    }
+  },
   extends: [envModules.typography, envModules.elements],
   runtimeConfig: {
     public: {
@@ -87,7 +106,7 @@ export default defineNuxtConfig({
       { code: 'es', language: 'es-PE', name: 'Español', file: 'es.json' },
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' }
     ],
-    defaultLocale: 'es',
+    defaultLocale: i18nDefaultLocale,
     strategy: 'prefix',
     langDir: 'locales',
     detectBrowserLanguage: {
@@ -124,6 +143,21 @@ export default defineNuxtConfig({
   // data, etc.) can override this per-route via their own `routeRules`, e.g.
   // `routeRules: { '/dashboard/**': { prerender: false } }`.
   routeRules: {
+    // Without this, `/` (the bare domain — what's actually shared/crawled when someone posts
+    // just the site's link) is handled entirely by `@nuxtjs/i18n`'s client-side
+    // `detectBrowserLanguage` redirect. On a fully static build, Nitro can't emit that as a real
+    // HTTP redirect at prerender time, so it falls back to shipping a bare HTML stub with only
+    // `<meta http-equiv="refresh" content="0; url=/es">` — no title, no og:image, no favicon.
+    // Link-preview crawlers (WhatsApp, Facebook, X, LinkedIn) and Googlebot do NOT execute
+    // meta-refresh, so they see that empty stub and render no image/title at all (confirmed via
+    // direct curl against production — the stub is 89 bytes, nothing else). Declaring the
+    // redirect explicitly here lets Nitro's hosting-specific preset (e.g. `cloudflare`'s
+    // `writeCFPagesRedirects`) emit it as a real edge-level 302 in `_redirects`, which every one
+    // of those crawlers follows just fine, landing them on `/es` with its real meta tags. This
+    // doesn't change real-user behavior: the meta-refresh already fired before Vue hydration had
+    // any chance to run browser-language detection, so visitors always landed on `/es` first
+    // either way.
+    '/': { redirect: { to: `/${i18nDefaultLocale}`, statusCode: 302 } },
     '/**': { prerender: true },
     // `@nuxt/image`'s `ipx` routes are resized on demand and don't exist as real content
     // pages — crawling them at build time requires `sharp`, which isn't available in most
